@@ -10,7 +10,7 @@ export function SegmentedTabs<T extends string>({
   onChange: (next: T) => void;
 }) {
   return (
-    <div className="inline-flex rounded-[10px] border border-white/5 bg-white/[0.04] p-1">
+    <div className="inline-flex rounded-[10px] border border-premium-border bg-[rgba(179,207,229,0.12)] dark:bg-white/[0.04] p-1">
       {options.map((opt) => {
         const active = opt.value === value;
         return (
@@ -32,4 +32,3 @@ export function SegmentedTabs<T extends string>({
     </div>
   );
 }
-

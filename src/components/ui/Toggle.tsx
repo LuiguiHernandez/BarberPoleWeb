@@ -21,7 +21,7 @@ export function Toggle({ checked, onChange, label, className }: ToggleProps) {
         }}
         className={cn(
           "relative h-6 w-11 rounded-full transition flex-shrink-0",
-          checked ? "bg-premium-primary" : "bg-white/10",
+          checked ? "bg-premium-primary" : "bg-[#B3CFE5] dark:bg-[#1a3556]",
         )}
       >
         <span
@@ -37,4 +37,3 @@ export function Toggle({ checked, onChange, label, className }: ToggleProps) {
     </label>
   );
 }
-
