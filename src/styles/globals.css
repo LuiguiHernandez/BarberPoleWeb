@@ -6,7 +6,25 @@
 
 @layer base {
   :root {
+    color-scheme: light;
+    --pr-bg:         #F6FAFD;
+    --pr-panel:      #FFFFFF;
+    --pr-topbar:     rgba(246, 250, 253, 0.90);
+    --pr-nav-bottom: rgba(255, 255, 255, 0.95);
+    --pr-border:     rgba(179, 207, 229, 0.45);
+    --pr-text:       #0A1931;
+    --pr-muted:      #1A3D63;
+  }
+
+  .dark {
     color-scheme: dark;
+    --pr-bg:         #060d1a;
+    --pr-panel:      #0c1b2e;
+    --pr-topbar:     rgba(6, 13, 26, 0.90);
+    --pr-nav-bottom: rgba(12, 27, 46, 0.95);
+    --pr-border:     rgba(179, 207, 229, 0.10);
+    --pr-text:       #F6FAFD;
+    --pr-muted:      #B3CFE5;
   }
 
   * {
@@ -34,8 +52,7 @@
     background: transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(179, 207, 229, 0.35);
     border-radius: 3px;
   }
 }
-

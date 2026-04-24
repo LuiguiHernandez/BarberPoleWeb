@@ -25,15 +25,19 @@ export function SettingsLayout() {
               to={tab.to}
               className={({ isActive }) =>
                 cn(
-                  "shrink-0 flex items-center gap-2 rounded-[10px] px-3.5 py-2.5 text-[13px] transition border border-white/5",
+                  "shrink-0 flex items-center gap-2 rounded-[10px] px-3.5 py-2.5 text-[13px] transition border border-premium-border",
                   isActive
                     ? "bg-premium-primary/10 text-premium-primary border-premium-primary/30"
-                    : "text-premium-muted",
+                    : "text-premium-muted hover:bg-[rgba(179,207,229,0.15)]",
                 )
               }
             >
-              <Icon name={tab.icon} size={16} />
-              <span className="font-medium">{tab.label}</span>
+              {({ isActive }) => (
+                <>
+                  <Icon name={tab.icon} size={16} className={isActive ? "opacity-100" : ""} />
+                  <span className="font-medium">{tab.label}</span>
+                </>
+              )}
             </NavLink>
           ))}
         </div>
@@ -50,12 +54,16 @@ export function SettingsLayout() {
                   "flex items-center gap-2.5 rounded-[10px] px-3.5 py-2.5 text-[14px] transition border-l-2",
                   isActive
                     ? "bg-premium-primary/10 text-premium-primary border-premium-primary"
-                    : "text-premium-muted border-transparent hover:bg-white/[0.03]",
+                    : "text-premium-muted border-transparent hover:bg-[rgba(179,207,229,0.15)] hover:text-premium-text",
                 )
               }
             >
-              <Icon name={tab.icon} size={17} />
-              <span className={cn("font-normal", "leading-none")}>{tab.label}</span>
+              {({ isActive }) => (
+                <>
+                  <Icon name={tab.icon} size={17} className={isActive ? "opacity-100" : ""} />
+                  <span className="font-normal leading-none">{tab.label}</span>
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -67,4 +75,3 @@ export function SettingsLayout() {
     </div>
   );
 }
-

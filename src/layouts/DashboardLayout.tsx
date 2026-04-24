@@ -11,7 +11,7 @@ export function DashboardLayout() {
 
         <main className="flex-1 min-h-dvh min-[861px]:ml-[240px] pb-20 min-[861px]:pb-0">
           <Topbar />
-          <div className="rounded-[18px] border border-white/5 bg-white/[0.02] p-6 lg:p-8 mx-6 lg:mx-8 mt-7">
+          <div className="rounded-[18px] border border-premium-border bg-premium-panel shadow-card p-6 lg:p-8 mx-6 lg:mx-8 mt-7">
             <Outlet />
           </div>
         </main>
@@ -21,4 +21,3 @@ export function DashboardLayout() {
     </div>
   );
 }
-

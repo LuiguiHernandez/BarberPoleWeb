@@ -2,30 +2,34 @@ import type { Config } from "tailwindcss";
 
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         premium: {
-          bg: "#0B0F19",
-          panel: "#0F172A",
-          panel2: "rgba(255,255,255,0.03)",
-          border: "rgba(255,255,255,0.08)",
-          text: "#F8FAFC",
-          muted: "#94A3B8",
-          primary: "#3B82F6",
-          primary2: "#60A5FA",
-          danger: "#EF4444",
-          danger2: "#F87171"
+          bg:        "var(--pr-bg)",
+          panel:     "var(--pr-panel)",
+          topbar:    "var(--pr-topbar)",
+          navBottom: "var(--pr-nav-bottom)",
+          border:    "var(--pr-border)",
+          text:      "var(--pr-text)",
+          muted:     "var(--pr-muted)",
+          primary:   "#4A7FA7",
+          primary2:  "#3a6f97",
+          danger:    "#dc2626",
+          danger2:   "#ef4444",
+          white:     "#ffffff",
+          accent:    "#B3CFE5",
         },
       },
       boxShadow: {
-        primary: "0 2px 12px rgba(59,130,246,0.25)",
+        primary: "0 4px 16px rgba(74,127,167,0.25)",
+        card:    "0 2px 8px rgba(10,25,49,0.06)",
       },
       fontFamily: {
-        sans: ["DM Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"]
-      }
-    }
+        sans: ["DM Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 } satisfies Config;
-

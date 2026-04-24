@@ -14,7 +14,7 @@ const ITEMS: Array<{ id: string; label: string; icon: IconName; to?: string }> =
 
 export function MobileBottomNav() {
   return (
-    <nav className="min-[861px]:hidden fixed bottom-0 left-0 right-0 z-[200] h-16 border-t border-white/5 bg-premium-panel/95 backdrop-blur-[20px]">
+    <nav className="min-[861px]:hidden fixed bottom-0 left-0 right-0 z-[200] h-16 border-t border-premium-border bg-premium-navBottom backdrop-blur-[20px]">
       <div className="flex h-full items-center justify-around px-2 pb-[env(safe-area-inset-bottom)]">
         {ITEMS.slice(0, 5).map((item) => (
           <NavLink
@@ -23,13 +23,17 @@ export function MobileBottomNav() {
             className={({ isActive }) =>
               cn(
                 "flex flex-col items-center gap-1 px-2 py-1",
-                isActive ? "text-premium-primary" : "text-[#555]",
+                isActive ? "text-premium-primary" : "text-premium-muted",
               )
             }
             aria-label={item.label}
           >
-            <Icon name={item.icon} size={20} />
-            <span className="text-[10px] font-medium">{item.label}</span>
+            {({ isActive }) => (
+              <>
+                <Icon name={item.icon} size={20} className={isActive ? "opacity-100" : ""} />
+                <span className="text-[10px] font-medium">{item.label}</span>
+              </>
+            )}
           </NavLink>
         ))}
 
@@ -38,16 +42,19 @@ export function MobileBottomNav() {
           className={({ isActive }) =>
             cn(
               "flex flex-col items-center gap-1 px-2 py-1",
-              isActive ? "text-premium-primary" : "text-premium-primary",
+              isActive ? "text-premium-primary" : "text-premium-muted",
             )
           }
           aria-label="Config"
         >
-          <Icon name="gear" size={20} />
-          <span className="text-[10px] font-semibold">Config</span>
+          {({ isActive }) => (
+            <>
+              <Icon name="gear" size={20} className={isActive ? "opacity-100" : ""} />
+              <span className="text-[10px] font-semibold">Config</span>
+            </>
+          )}
         </NavLink>
       </div>
     </nav>
   );
 }
-
