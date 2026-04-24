@@ -1,7 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { SettingsLayout } from "../layouts/SettingsLayout";
+import { ProtectedRoute } from "./ProtectedRoute";
 import { paths } from "./paths";
+import { LoginPage } from "../pages/LoginPage";
 import { CitasPage } from "../pages/CitasPage";
 import { InformesPage } from "../pages/InformesPage";
 import { ConversacionesPage } from "../pages/ConversacionesPage";
@@ -18,9 +20,17 @@ import { NotificacionesPage } from "../pages/NotificacionesPage";
 export function AppRoutes() {
   return (
     <Routes>
+      <Route path={paths.auth.login} element={<LoginPage />} />
       <Route path="/" element={<Navigate to={paths.dashboard.citas} replace />} />
 
-      <Route path={paths.dashboard.root} element={<DashboardLayout />}>
+      <Route
+        path={paths.dashboard.root}
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<CitasPage />} />
         <Route path="informes" element={<InformesPage />} />
         <Route path="conversaciones" element={<ConversacionesPage />} />
@@ -38,7 +48,7 @@ export function AppRoutes() {
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to={paths.dashboard.citas} replace />} />
+      <Route path="*" element={<Navigate to={paths.auth.login} replace />} />
     </Routes>
   );
 }

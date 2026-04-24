@@ -1,6 +1,7 @@
 import { Icon } from "../components/Icon";
 import { Moon, Sun, LogOut } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 
 function formatSpanishDate(date: Date) {
   return new Intl.DateTimeFormat("es-CO", {
@@ -33,7 +34,8 @@ function IconButton({
 
 export function Topbar() {
   const { isDark, toggle } = useTheme();
-  const userName = "LuiguidBarber";
+  const { user, logout } = useAuth();
+  const userName = user?.nombre || "Usuario";
 
   return (
     <header className="sticky top-0 z-50 border-b border-premium-border bg-premium-topbar backdrop-blur-[20px]">
@@ -73,7 +75,7 @@ export function Topbar() {
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </IconButton>
 
-          <IconButton ariaLabel="Cerrar sesión">
+          <IconButton ariaLabel="Cerrar sesión" onClick={logout}>
             <LogOut size={16} />
           </IconButton>
         </div>

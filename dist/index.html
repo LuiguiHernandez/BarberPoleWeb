@@ -4,8 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BarberPole — Dashboard</title>
-    <script type="module" crossorigin src="/assets/index-BM28NCyf.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Kywwihmv.css">
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (t === "dark" || (!t && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BWvGP71E.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-QdhezSaD.css">
   </head>
   <body>
     <div id="root"></div>
