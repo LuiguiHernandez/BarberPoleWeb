@@ -1,4 +1,7 @@
 export const paths = {
+  auth: {
+    login: "/login",
+  },
   dashboard: {
     root: "/dashboard",
     citas: "/dashboard",
