@@ -36,7 +36,7 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
 export const auth = {
   login: (email: string, password: string) =>
     apiFetch<{ access_token: string; usuario_nombre: string; negocio_nombre: string; negocio_slug: string }>(
-      '/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }
+      '/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }
     ),
   register: (data: { nombre: string; email: string; password: string; nombre_negocio: string }) =>
     apiFetch<{ access_token: string; usuario_nombre: string }>('/api/auth/register', { method: 'POST', body: JSON.stringify(data) }),
