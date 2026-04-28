@@ -72,14 +72,6 @@ export function CarlosPage() {
     }
   }
 
-  function handleUseCarlos() {
-    if (!carlosActivo) {
-      window.alert(
-        "No tienes un plan pago. Contrata un plan Mensual o Anual para usar Carlos IA."
-      );
-    }
-  }
-
   async function handleToggleRecordatorios(value: boolean) {
     setRecordatorios(value);
     try {
@@ -91,6 +83,32 @@ export function CarlosPage() {
   }
 
   if (loading) return <div className="flex items-center justify-center py-20 text-[14px] text-premium-muted">Cargando...</div>;
+
+  if (!carlosActivo) {
+    return (
+      <div className="flex flex-col gap-6">
+        <div>
+          <h2 className="text-[22px] font-bold tracking-[-0.5px] text-premium-text">Carlos IA</h2>
+          <p className="mt-1 text-[13px] text-premium-muted">
+            Tu recepcionista inteligente sólo está disponible con plan Mensual o Anual.
+          </p>
+        </div>
+
+        <div className="rounded-[14px] border border-premium-primary/20 bg-premium-primary/10 px-5 py-5 text-[12px] text-premium-primary/90">
+          <div className="mb-4 text-[14px] font-semibold text-premium-text">Activa Carlos IA con tu plan pago</div>
+          <p className="mb-4 text-[13px] text-premium-muted">
+            Antes de ingresar a tu perfil de Carlos IA verificamos tu plan. Si no tienes plan pago, debes comunicarte con soporte para activarlo.
+          </p>
+          <a
+            href="mailto:soporte@barberpole.com?subject=Solicitud%20de%20activaci%C3%B3n%20de%20Carlos%20IA"
+            className="inline-flex rounded-[10px] bg-premium-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-premium-primary2"
+          >
+            Contactar soporte
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -108,29 +126,6 @@ export function CarlosPage() {
         </div>
       )}
 
-      {!carlosActivo ? (
-        <div className="rounded-[14px] border border-premium-primary/20 bg-premium-primary/10 px-5 py-3 text-[12px]">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-premium-primary/90">
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 h-5 w-5 rounded-[6px] bg-premium-primary/15" />
-              <div>
-                <div className="font-semibold">Carlos IA es exclusiva de planes Mensual y Anual</div>
-                <div className="text-premium-muted">
-                  Usa este botón para activar Carlos IA. Si no tienes un plan pago, recibirás una alerta.
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleUseCarlos}
-              className="rounded-[10px] bg-premium-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-premium-primary2"
-            >
-              Usar Carlos IA
-            </button>
-          </div>
-        </div>
-      ) : null}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card>
