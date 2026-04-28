@@ -72,6 +72,14 @@ export function CarlosPage() {
     }
   }
 
+  function handleUseCarlos() {
+    if (!carlosActivo) {
+      window.alert(
+        "No tienes un plan pago. Contrata un plan Mensual o Anual para usar Carlos IA."
+      );
+    }
+  }
+
   async function handleToggleRecordatorios(value: boolean) {
     setRecordatorios(value);
     try {
@@ -100,24 +108,29 @@ export function CarlosPage() {
         </div>
       )}
 
-      <div className="rounded-[14px] border border-premium-primary/20 bg-premium-primary/10 px-5 py-3 text-[12px]">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-premium-primary/90">
-          <div className="flex items-start gap-3">
-            <div className="mt-0.5 h-5 w-5 rounded-[6px] bg-premium-primary/15" />
-            <div>
-              <div className="font-semibold">Carlos IA es exclusiva de planes Mensual y Anual</div>
-              <div className="text-premium-muted">
-                Activa la función para que tu recepcionista inteligente responda por WhatsApp.
+      {!carlosActivo ? (
+        <div className="rounded-[14px] border border-premium-primary/20 bg-premium-primary/10 px-5 py-3 text-[12px]">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-premium-primary/90">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 h-5 w-5 rounded-[6px] bg-premium-primary/15" />
+              <div>
+                <div className="font-semibold">Carlos IA es exclusiva de planes Mensual y Anual</div>
+                <div className="text-premium-muted">
+                  Usa este botón para activar Carlos IA. Si no tienes un plan pago, recibirás una alerta.
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3 rounded-[10px] border border-premium-border bg-white/10 px-3 py-2">
-            <span className="text-sm font-medium text-premium-text">{carlosActivo ? 'Carlos IA activo' : 'Carlos IA inactivo'}</span>
-            <Toggle checked={carlosActivo} onChange={handleToggleActive} />
+            <button
+              type="button"
+              onClick={handleUseCarlos}
+              className="rounded-[10px] bg-premium-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-premium-primary2"
+            >
+              Usar Carlos IA
+            </button>
           </div>
         </div>
-      </div>
+      ) : null}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card>
