@@ -11,6 +11,7 @@ export function CarlosPage() {
   const [stats, setStats] = useState({ mensajes_respondidos: 0, citas_creadas_por_carlos: 0, tasa_respuesta: 0 });
   const [indicaciones, setIndicaciones] = useState<carlosIndicacion[]>([]);
   const [recordatorios, setRecordatorios] = useState(false);
+  const [carlosActivo, setCarlosActivo] = useState(false);
   const [nuevoTexto, setNuevoTexto] = useState("");
   const [loading, setLoading] = useState(true);
   const [addLoading, setAddLoading] = useState(false);
@@ -20,7 +21,10 @@ export function CarlosPage() {
     Promise.all([
       carlos.stats().then(setStats),
       carlos.indicaciones().then(setIndicaciones),
-      negocio.get().then((d) => setRecordatorios(d.carlos_recordatorios_activos)),
+      negocio.get().then((d) => {
+        setRecordatorios(d.carlos_recordatorios_activos);
+        setCarlosActivo(d.carlos_activa);
+      }),
     ])
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -58,6 +62,16 @@ export function CarlosPage() {
     }
   }
 
+  async function handleToggleActive(value: boolean) {
+    setCarlosActivo(value);
+    try {
+      await negocio.update({ carlos_activa: value });
+    } catch (e: any) {
+      setError(e.message);
+      setCarlosActivo(!value);
+    }
+  }
+
   async function handleToggleRecordatorios(value: boolean) {
     setRecordatorios(value);
     try {
@@ -87,13 +101,20 @@ export function CarlosPage() {
       )}
 
       <div className="rounded-[14px] border border-premium-primary/20 bg-premium-primary/10 px-5 py-3 text-[12px]">
-        <div className="flex items-start gap-3 text-premium-primary/90">
-          <div className="mt-0.5 h-5 w-5 rounded-[6px] bg-premium-primary/15" />
-          <div>
-            <div className="font-semibold">Carlos IA es exclusiva de planes Mensual y Anual</div>
-            <div className="text-premium-muted">
-              Actualiza tu plan para activar tu recepcionista inteligente 24/7 por WhatsApp.
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-premium-primary/90">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 h-5 w-5 rounded-[6px] bg-premium-primary/15" />
+            <div>
+              <div className="font-semibold">Carlos IA es exclusiva de planes Mensual y Anual</div>
+              <div className="text-premium-muted">
+                Activa la función para que tu recepcionista inteligente responda por WhatsApp.
+              </div>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3 rounded-[10px] border border-premium-border bg-white/10 px-3 py-2">
+            <span className="text-sm font-medium text-premium-text">{carlosActivo ? 'Carlos IA activo' : 'Carlos IA inactivo'}</span>
+            <Toggle checked={carlosActivo} onChange={handleToggleActive} />
           </div>
         </div>
       </div>
