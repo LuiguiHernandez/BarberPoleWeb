@@ -62,16 +62,6 @@ export function CarlosPage() {
     }
   }
 
-  async function handleToggleActive(value: boolean) {
-    setCarlosActivo(value);
-    try {
-      await negocio.update({ carlos_activa: value });
-    } catch (e: any) {
-      setError(e.message);
-      setCarlosActivo(!value);
-    }
-  }
-
   async function handleToggleRecordatorios(value: boolean) {
     setRecordatorios(value);
     try {
@@ -81,6 +71,9 @@ export function CarlosPage() {
       setRecordatorios(!value);
     }
   }
+
+  // carlos_activa debe ser controlado únicamente por el backend basado en el plan de pago del usuario
+  // El frontend no debe permitir activarlo/desactivarlo manualmente
 
   if (loading) return <div className="flex items-center justify-center py-20 text-[14px] text-premium-muted">Cargando...</div>;
 
