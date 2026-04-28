@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { luna, negocio, type LunaIndicacion } from "../api/client";
+import { carlos, negocio, type carlosIndicacion } from "../api/client";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
@@ -7,9 +7,9 @@ import { Toggle } from "../components/ui/Toggle";
 import { Icon } from "../components/Icon";
 import { cn } from "../utils/cn";
 
-export function LunaPage() {
-  const [stats, setStats] = useState({ mensajes_respondidos: 0, citas_creadas_por_luna: 0, tasa_respuesta: 0 });
-  const [indicaciones, setIndicaciones] = useState<LunaIndicacion[]>([]);
+export function CarlosPage() {
+  const [stats, setStats] = useState({ mensajes_respondidos: 0, citas_creadas_por_carlos: 0, tasa_respuesta: 0 });
+  const [indicaciones, setIndicaciones] = useState<carlosIndicacion[]>([]);
   const [recordatorios, setRecordatorios] = useState(false);
   const [nuevoTexto, setNuevoTexto] = useState("");
   const [loading, setLoading] = useState(true);
@@ -18,9 +18,9 @@ export function LunaPage() {
 
   useEffect(() => {
     Promise.all([
-      luna.stats().then(setStats),
-      luna.indicaciones().then(setIndicaciones),
-      negocio.get().then((d) => setRecordatorios(d.luna_recordatorios_activos)),
+      carlos.stats().then(setStats),
+      carlos.indicaciones().then(setIndicaciones),
+      negocio.get().then((d) => setRecordatorios(d.carlos_recordatorios_activos)),
     ])
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -30,7 +30,7 @@ export function LunaPage() {
     if (!nuevoTexto.trim()) return;
     setAddLoading(true);
     try {
-      const nueva = await luna.agregarIndicacion(nuevoTexto.trim());
+      const nueva = await carlos.agregarIndicacion(nuevoTexto.trim());
       setIndicaciones((prev) => [...prev, nueva]);
       setNuevoTexto("");
     } catch (e: any) {
@@ -40,9 +40,9 @@ export function LunaPage() {
     }
   }
 
-  async function handleToggleIndicacion(ind: LunaIndicacion) {
+  async function handleToggleIndicacion(ind: carlosIndicacion) {
     try {
-      const updated = await luna.toggleIndicacion(ind.id, !ind.activa);
+      const updated = await carlos.toggleIndicacion(ind.id, !ind.activa);
       setIndicaciones((prev) => prev.map((i) => (i.id === ind.id ? updated : i)));
     } catch (e: any) {
       setError(e.message);
@@ -51,7 +51,7 @@ export function LunaPage() {
 
   async function handleEliminar(id: number) {
     try {
-      await luna.eliminarIndicacion(id);
+      await carlos.eliminarIndicacion(id);
       setIndicaciones((prev) => prev.filter((i) => i.id !== id));
     } catch (e: any) {
       setError(e.message);
@@ -61,7 +61,7 @@ export function LunaPage() {
   async function handleToggleRecordatorios(value: boolean) {
     setRecordatorios(value);
     try {
-      await negocio.update({ luna_recordatorios_activos: value });
+      await negocio.update({ carlos_recordatorios_activos: value });
     } catch (e: any) {
       setError(e.message);
       setRecordatorios(!value);
@@ -73,7 +73,7 @@ export function LunaPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-[22px] font-bold tracking-[-0.5px] text-premium-text">Luna IA</h2>
+        <h2 className="text-[22px] font-bold tracking-[-0.5px] text-premium-text">Carlos IA</h2>
         <p className="mt-1 text-[13px] text-premium-muted">
           Tu recepcionista inteligente — estadísticas y configuración
         </p>
@@ -90,7 +90,7 @@ export function LunaPage() {
         <div className="flex items-start gap-3 text-premium-primary/90">
           <div className="mt-0.5 h-5 w-5 rounded-[6px] bg-premium-primary/15" />
           <div>
-            <div className="font-semibold">Luna IA es exclusiva de planes Mensual y Anual</div>
+            <div className="font-semibold">Carlos IA es exclusiva de planes Mensual y Anual</div>
             <div className="text-premium-muted">
               Actualiza tu plan para activar tu recepcionista inteligente 24/7 por WhatsApp.
             </div>
@@ -104,8 +104,8 @@ export function LunaPage() {
           <div className="mt-3 text-[22px] font-semibold text-premium-text">{stats.mensajes_respondidos}</div>
         </Card>
         <Card>
-          <div className="text-[12px] text-premium-muted">Citas creadas por Luna</div>
-          <div className="mt-3 text-[22px] font-semibold text-premium-text">{stats.citas_creadas_por_luna}</div>
+          <div className="text-[12px] text-premium-muted">Citas creadas por Carlos</div>
+          <div className="mt-3 text-[22px] font-semibold text-premium-text">{stats.citas_creadas_por_carlos}</div>
         </Card>
         <Card>
           <div className="text-[12px] text-premium-muted">Tasa de respuesta</div>
@@ -117,9 +117,9 @@ export function LunaPage() {
         <Card>
           <div className="flex items-center justify-between gap-4 mb-4">
             <div>
-              <div className="text-[14px] font-semibold text-premium-text">Indicaciones para Luna</div>
+              <div className="text-[14px] font-semibold text-premium-text">Indicaciones para Carlos</div>
               <div className="mt-1 text-[12px] text-premium-muted">
-                Luna seguirá estas indicaciones al responder.
+                Carlos seguirá estas indicaciones al responder.
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ export function LunaPage() {
           <div>
             <div className="text-[14px] font-semibold text-premium-text">Recordatorios automáticos</div>
             <div className="mt-1 text-[12px] text-premium-muted">
-              Luna notifica al cliente y al barbero por WhatsApp
+              Carlos notifica al cliente y al barbero por WhatsApp
             </div>
           </div>
           <Toggle checked={recordatorios} onChange={handleToggleRecordatorios} />

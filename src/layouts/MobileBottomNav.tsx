@@ -8,7 +8,7 @@ const ITEMS: Array<{ id: string; label: string; icon: IconName; to?: string }> =
   { id: "informes", label: "Informes", icon: "chart", to: paths.dashboard.informes },
   { id: "conversaciones", label: "Conversaciones", icon: "chat", to: paths.dashboard.conversaciones },
   { id: "lealtad", label: "Lealtad", icon: "heart", to: paths.dashboard.lealtad },
-  { id: "luna", label: "Luna IA", icon: "sparkle", to: paths.dashboard.luna },
+  { id: "carlos", label: "carlos IA", icon: "sparkle", to: paths.dashboard.carlos },
   { id: "config", label: "Config", icon: "gear", to: paths.dashboard.negocio },
 ];
 

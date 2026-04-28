@@ -13,7 +13,7 @@ const NAV_ITEMS: Array<{
   { id: "informes", label: "Informes", to: paths.dashboard.informes, icon: BarChart3 },
   { id: "conversaciones", label: "Conversaciones", to: paths.dashboard.conversaciones, icon: MessageSquare },
   { id: "lealtad", label: "Lealtad", to: paths.dashboard.lealtad, icon: Star },
-  { id: "luna", label: "Luna IA", to: paths.dashboard.luna, icon: Bot },
+  { id: "carlos", label: "carlos IA", to: paths.dashboard.carlos, icon: Bot },
   { id: "config", label: "Config", to: paths.dashboard.negocio, icon: Settings },
 ];
 

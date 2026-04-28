@@ -48,7 +48,7 @@ export interface Negocio {
   reservas_activas: boolean; reservas_anticipacion_max_dias: number; reservas_cancelacion_horas: number;
   acepta_efectivo: boolean; acepta_transferencia: boolean; acepta_tarjeta: boolean;
   notif_nueva_cita: boolean; notif_recordatorio: boolean; notif_cancelacion: boolean;
-  luna_activa: boolean; luna_recordatorios_activos: boolean;
+  carlos_activa: boolean; carlos_recordatorios_activos: boolean;
 }
 export interface Servicio { id: number; nombre: string; descripcion?: string; duracion_minutos: number; precio: number; activo: boolean; }
 export interface Barbero { id: number; nombre: string; telefono?: string; email?: string; foto_url?: string; activo: boolean; }
@@ -56,20 +56,20 @@ export interface Cliente { id: number; nombre: string; telefono?: string; email?
 export interface Cita { 
   id: number; fecha_hora: string; duracion_minutos: number; precio: number;
   estado: 'pendiente' | 'confirmada' | 'completada' | 'cancelada' | 'no_asistio';
-  notas?: string; creada_por_luna: boolean;
+  notas?: string; creada_por_carlos: boolean;
   cliente?: { id: number; nombre: string; telefono?: string };
   barbero?: { id: number; nombre: string };
   servicio?: { id: number; nombre: string; duracion_minutos: number; precio: number };
 }
 export interface Horario { id: number; dia: string; abierto: boolean; hora_inicio: string; hora_fin: string; }
-export interface Conversacion { id: number; telefono: string; nombre_contacto?: string; ultimo_mensaje?: string; ultimo_mensaje_en?: string; no_leidos: number; manejada_por_luna: boolean; }
-export interface Mensaje { id: number; contenido: string; enviado_por: 'cliente' | 'luna' | 'barberia'; enviado_en: string; leido: boolean; }
+export interface Conversacion { id: number; telefono: string; nombre_contacto?: string; ultimo_mensaje?: string; ultimo_mensaje_en?: string; no_leidos: number; manejada_por_carlos: boolean; }
+export interface Mensaje { id: number; contenido: string; enviado_por: 'cliente' | 'carlos' | 'barberia'; enviado_en: string; leido: boolean; }
 export interface InformesStats {
   total_citas: number; completadas: number; ingresos_totales: number; tasa_completadas: number;
   citas_por_estado: Record<string, number>;
   ingresos_por_barbero: Array<{ barbero: string; ingresos: number }>;
 }
-export interface LunaIndicacion { id: number; texto: string; activa: boolean; creado_en: string; }
+export interface carlosIndicacion { id: number; texto: string; activa: boolean; creado_en: string; }
 
 // --- SERVICIOS ---
 export const auth = {
@@ -136,12 +136,12 @@ export const conversaciones = {
   responder: async (id: number, contenido: string) => (await api.post(`/api/conversaciones/${id}/responder`, { contenido })).data,
 };
 
-export const luna = {
-  stats: async () => (await api.get('/api/luna/stats')).data,
-  indicaciones: async () => (await api.get('/api/luna/indicaciones')).data,
-  agregarIndicacion: async (texto: string) => (await api.post('/api/luna/indicaciones', { texto })).data,
-  toggleIndicacion: async (id: number, activa: boolean) => (await api.put(`/api/luna/indicaciones/${id}`, { activa })).data,
-  eliminarIndicacion: async (id: number) => await api.delete(`/api/luna/indicaciones/${id}`),
+export const carlos = {
+  stats: async () => (await api.get('/api/carlos/stats')).data,
+  indicaciones: async () => (await api.get('/api/carlos/indicaciones')).data,
+  agregarIndicacion: async (texto: string) => (await api.post('/api/carlos/indicaciones', { texto })).data,
+  toggleIndicacion: async (id: number, activa: boolean) => (await api.put(`/api/carlos/indicaciones/${id}`, { activa })).data,
+  eliminarIndicacion: async (id: number) => await api.delete(`/api/carlos/indicaciones/${id}`),
 };
 
 export function formatPrecio(valor: number): string {

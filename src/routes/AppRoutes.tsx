@@ -8,7 +8,7 @@ import { CitasPage } from "../pages/CitasPage";
 import { InformesPage } from "../pages/InformesPage";
 import { ConversacionesPage } from "../pages/ConversacionesPage";
 import { LealtadPage } from "../pages/LealtadPage";
-import { LunaPage } from "../pages/LunaPage";
+import { CarlosPage } from "../pages/CarlosPage";
 import { NegocioPage } from "../pages/NegocioPage";
 import { ServiciosPage } from "../pages/ServiciosPage";
 import { BarberosPage } from "../pages/BarberosPage";
@@ -35,7 +35,7 @@ export function AppRoutes() {
         <Route path="informes" element={<InformesPage />} />
         <Route path="conversaciones" element={<ConversacionesPage />} />
         <Route path="lealtad" element={<LealtadPage />} />
-        <Route path="luna" element={<LunaPage />} />
+        <Route path="carlos" element={<CarlosPage />} />
 
         <Route element={<SettingsLayout />}>
           <Route path="negocio" element={<NegocioPage />} />

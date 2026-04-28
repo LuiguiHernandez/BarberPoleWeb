@@ -8,7 +8,7 @@ export const paths = {
     informes: "/dashboard/informes",
     conversaciones: "/dashboard/conversaciones",
     lealtad: "/dashboard/lealtad",
-    luna: "/dashboard/luna",
+    carlos: "/dashboard/carlos",
     negocio: "/dashboard/negocio",
     servicios: "/dashboard/servicios",
     barberos: "/dashboard/barberos",

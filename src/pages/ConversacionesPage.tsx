@@ -91,7 +91,7 @@ export function ConversacionesPage() {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="text-[22px] font-bold tracking-[-0.5px] text-premium-text">Conversaciones</h2>
-        <p className="mt-1 text-[13px] text-premium-muted">Luna maneja estos chats de WhatsApp</p>
+        <p className="mt-1 text-[13px] text-premium-muted">carlos maneja estos chats de WhatsApp</p>
       </div>
 
       {error && (
@@ -120,7 +120,7 @@ export function ConversacionesPage() {
               <div className="px-5 pb-10 text-center text-[12px] text-premium-muted">
                 Aún no hay conversaciones.
                 <div className="mt-1 text-[11px] text-premium-muted/80">
-                  Cuando Luna responda un WhatsApp, aparecerá aquí.
+                  Cuando carlos responda un WhatsApp, aparecerá aquí.
                 </div>
               </div>
             ) : (
@@ -187,7 +187,7 @@ export function ConversacionesPage() {
                         <div>{m.contenido}</div>
                         <div className={cn("mt-1 text-[10px]", m.enviado_por === "cliente" ? "text-premium-muted" : "text-white/70")}>
                           {formatTime(m.enviado_en)}
-                          {m.enviado_por === "luna" && " · Luna IA"}
+                          {m.enviado_por === "carlos" && " · carlos IA"}
                         </div>
                       </div>
                     </div>
