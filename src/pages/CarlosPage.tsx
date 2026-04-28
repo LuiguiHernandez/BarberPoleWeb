@@ -14,12 +14,15 @@ export function CarlosPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const normalizeBoolean = (value: unknown) =>
+      value === true || value === "true" || value === 1 || value === "1";
+
     Promise.all([
       carlos.stats().then(setStats),
       carlos.indicaciones().then(setIndicaciones),
       negocio.get().then((d) => {
-        setRecordatorios(d.carlos_recordatorios_activos);
-        setCarlosActivo(d.carlos_activa);
+        setRecordatorios(normalizeBoolean(d.carlos_recordatorios_activos));
+        setCarlosActivo(normalizeBoolean(d.carlos_activa));
       }),
     ])
       .catch((e) => setError(e.message))
