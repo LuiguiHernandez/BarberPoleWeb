@@ -134,6 +134,7 @@ export const conversaciones = {
   listar: async (q?: string) => (await api.get('/api/conversaciones/', { params: { q } })).data,
   mensajes: async (id: number) => (await api.get(`/api/conversaciones/${id}/mensajes`)).data,
   responder: async (id: number, contenido: string) => (await api.post(`/api/conversaciones/${id}/responder`, { contenido })).data,
+  sincronizar: async (id: number) => (await api.post(`/api/conversaciones/${id}/sincronizar`)).data,
 };
 
 export const carlos = {
