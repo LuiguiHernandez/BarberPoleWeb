@@ -23,7 +23,7 @@ const ESTADO_COLOR: Record<string, string> = {
   no_asistio:  "bg-[rgba(179,207,229,0.20)] text-premium-muted",
 };
 
-type NuevaCitaForm = { fecha: string; hora: string; barbero_id: string; servicio_id: string; cliente_telefono: string; notas: string };
+type NuevaCitaForm = { fecha: string; hora: string; barbero_id: string; servicio_id: string; cliente_telefono: string; cliente_nombre: string; notas: string };
 
 export function CitasPage() {
   const [view, setView] = useState<View>("dia");
@@ -37,7 +37,7 @@ export function CitasPage() {
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
-  const [form, setForm] = useState<NuevaCitaForm>({ fecha: toISODate(new Date()), hora: "09:00", barbero_id: "", servicio_id: "", cliente_telefono: "", notas: "" });
+  const [form, setForm] = useState<NuevaCitaForm>({ fecha: toISODate(new Date()), hora: "09:00", barbero_id: "", servicio_id: "", cliente_telefono: "", cliente_nombre: "", notas: "" });
 
   const cargarStats = useCallback(async () => {
     const data = await dashboard.stats().catch(() => null);
@@ -74,7 +74,7 @@ export function CitasPage() {
   async function handleCrearCita() {
     setModalLoading(true);
     try {
-      await citas.crear({ fecha_hora: `${form.fecha}T${form.hora}:00`, barbero_id: Number(form.barbero_id), servicio_id: Number(form.servicio_id), cliente_telefono: form.cliente_telefono, notas: form.notas || undefined });
+      await citas.crear({ fecha_hora: `${form.fecha}T${form.hora}:00`, barbero_id: Number(form.barbero_id), servicio_id: Number(form.servicio_id), cliente_telefono: form.cliente_telefono, cliente_nombre: form.cliente_nombre || undefined, notas: form.notas || undefined });
       setShowModal(false);
       await Promise.all([cargarCitas(), cargarStats()]);
     } catch (e: any) {
@@ -166,6 +166,10 @@ export function CitasPage() {
               <div>
                 <label className="mb-1.5 block text-[12px] text-premium-muted">Teléfono del cliente</label>
                 <Input placeholder="+57 300 000 0000" value={form.cliente_telefono} onChange={(e) => setForm((f) => ({ ...f, cliente_telefono: e.target.value }))} />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-[12px] text-premium-muted">Nombre del cliente</label>
+                <Input placeholder="Nombre completo" value={form.cliente_nombre} onChange={(e) => setForm((f) => ({ ...f, cliente_nombre: e.target.value }))} />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
