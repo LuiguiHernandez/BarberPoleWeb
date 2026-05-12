@@ -57,6 +57,8 @@ export interface Cita {
   id: number; fecha_hora: string; duracion_minutos: number; precio: number;
   estado: 'pendiente' | 'confirmada' | 'completada' | 'cancelada' | 'no_asistio';
   notas?: string; creada_por_carlos: boolean;
+  fuente?: 'admin' | 'whatsapp' | 'web' | 'wordpress';
+  gcal_event_id?: string;
   cliente?: { id: number; nombre: string; telefono?: string };
   barbero?: { id: number; nombre: string };
   servicio?: { id: number; nombre: string; duracion_minutos: number; precio: number };

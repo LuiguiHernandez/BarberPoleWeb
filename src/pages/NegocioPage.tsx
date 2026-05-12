@@ -4,6 +4,9 @@ import { Icon } from "../components/Icon";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Textarea } from "../components/ui/Textarea";
+import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://167.172.145.102:8000';
 
 type FormData = Pick<Negocio, 'nombre' | 'slug' | 'telefono' | 'direccion' | 'descripcion' | 'logo_url'>
 
@@ -15,12 +18,65 @@ export function NegocioPage() {
   const [success, setSuccess] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Google Calendar state
+  const [gcalConectado, setGcalConectado] = useState(false);
+  const [gcalLoading, setGcalLoading] = useState(false);
+
   useEffect(() => {
     negocio.get()
       .then((d) => setForm({ nombre: d.nombre, slug: d.slug ?? "", telefono: d.telefono ?? "", direccion: d.direccion ?? "", descripcion: d.descripcion ?? "", logo_url: d.logo_url }))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
+
+    // Cargar estado de Google Calendar
+    const token = localStorage.getItem('bp_token');
+    if (token) {
+      axios.get(`${BASE_URL}/api/gcal/estado`, { headers: { Authorization: `Bearer ${token}` } })
+        .then((r) => setGcalConectado(r.data.conectado))
+        .catch(() => {});
+    }
+
+    // Detectar si viene del callback de Google
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('gcal') === 'connected') {
+      setGcalConectado(true);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
   }, []);
+
+  async function handleConectarGcal() {
+    setGcalLoading(true);
+    try {
+      const token = localStorage.getItem('bp_token');
+      const res = await axios.get(`${BASE_URL}/api/gcal/conectar`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data.auth_url) {
+        window.location.href = res.data.auth_url;
+      } else {
+        setError(res.data.error || "Error al conectar Google Calendar");
+      }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setGcalLoading(false);
+    }
+  }
+
+  async function handleDesconectarGcal() {
+    setGcalLoading(true);
+    try {
+      const token = localStorage.getItem('bp_token');
+      await axios.delete(`${BASE_URL}/api/gcal/desconectar`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setGcalConectado(false);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setGcalLoading(false);
+    }
+  }
 
   function set(key: keyof FormData, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -139,6 +195,53 @@ export function NegocioPage() {
           value={form.descripcion ?? ""}
           onChange={(e) => set("descripcion", e.target.value)}
         />
+      </div>
+
+      {/* Google Calendar */}
+      <div className="rounded-[14px] border border-premium-border bg-premium-panel p-5">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-premium-bg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" stroke="#4A7FA7" strokeWidth="1.5"/>
+                <line x1="16" y1="2" x2="16" y2="6" stroke="#4A7FA7" strokeWidth="1.5" strokeLinecap="round"/>
+                <line x1="8" y1="2" x2="8" y2="6" stroke="#4A7FA7" strokeWidth="1.5" strokeLinecap="round"/>
+                <line x1="3" y1="10" x2="21" y2="10" stroke="#4A7FA7" strokeWidth="1.5"/>
+              </svg>
+            </div>
+            <div>
+              <div className="text-[14px] font-semibold text-premium-text">Google Calendar</div>
+              <div className="text-[12px] text-premium-muted">
+                {gcalConectado
+                  ? "✓ Conectado — las citas se sincronizan automáticamente"
+                  : "Sin conectar — conecta para crear eventos automáticamente"}
+              </div>
+            </div>
+          </div>
+          {gcalConectado ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleDesconectarGcal}
+              disabled={gcalLoading}
+            >
+              {gcalLoading ? "..." : "Desconectar"}
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              onClick={handleConectarGcal}
+              disabled={gcalLoading}
+            >
+              {gcalLoading ? "Conectando..." : "Conectar Google Calendar"}
+            </Button>
+          )}
+        </div>
+        {gcalConectado && (
+          <div className="mt-3 rounded-[10px] bg-green-500/10 px-4 py-2.5 text-[12px] text-green-600 dark:text-green-400">
+            Cada cita nueva crea un evento en tu Google Calendar con recordatorios automáticos. Las citas canceladas eliminan el evento.
+          </div>
+        )}
       </div>
 
       <div className="flex justify-end pt-2">
