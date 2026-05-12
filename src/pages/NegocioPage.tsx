@@ -115,7 +115,7 @@ export function NegocioPage() {
     <div className="flex flex-col gap-7">
       <div>
         <h3 className="text-[18px] font-semibold text-premium-text">Información del negocio</h3>
-        <p className="mt-1 text-[13px] text-premium-muted">Datos principales de tu barbería</p>
+        <p className="mt-1 text-[13px] text-premium-muted">Datos principales de tu negocio</p>
       </div>
 
       {error && (
@@ -148,7 +148,7 @@ export function NegocioPage() {
         </div>
 
         <div className="flex-1">
-          <label className="mb-1.5 block text-[13px] text-premium-muted">Nombre de la barbería</label>
+          <label className="mb-1.5 block text-[13px] text-premium-muted">Nombre del negocio</label>
           <Input value={form.nombre} onChange={(e) => set("nombre", e.target.value)} />
         </div>
       </div>

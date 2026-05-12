@@ -69,7 +69,7 @@ export function PagosPage() {
             <PaymentBadge bg="rgba(102,187,106,0.12)">💵</PaymentBadge>
             <div>
               <div className="text-[14px] font-medium text-premium-text">Efectivo</div>
-              <div className="mt-0.5 text-[12px] text-premium-muted">Pago presencial en la barbería</div>
+              <div className="mt-0.5 text-[12px] text-premium-muted">Pago presencial en el negocio</div>
             </div>
           </div>
           <Toggle checked={datos.acepta_efectivo} onChange={(v) => setDatos((d) => ({ ...d, acepta_efectivo: v }))} />

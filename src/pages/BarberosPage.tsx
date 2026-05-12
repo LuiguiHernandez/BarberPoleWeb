@@ -170,7 +170,7 @@ export function BarberosPage() {
               </div>
               <div>
                 <label className="mb-1.5 block text-[12px] text-premium-muted">Email (opcional)</label>
-                <Input type="email" placeholder="carlos@barberia.com" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+                <Input type="email" placeholder="contacto@negocio.com" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[13px] text-premium-text">Activo</span>
