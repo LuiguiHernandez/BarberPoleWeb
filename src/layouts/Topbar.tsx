@@ -36,6 +36,7 @@ export function Topbar() {
   const { isDark, toggle } = useTheme();
   const { user, logout } = useAuth();
   const userName = user?.nombre || "Usuario";
+  const nombreNegocio = user?.negocio?.nombre || "GestorPro";
 
   return (
     <header className="sticky top-0 z-50 border-b border-premium-border bg-premium-topbar backdrop-blur-[20px]">
@@ -43,9 +44,9 @@ export function Topbar() {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2.5 min-[861px]:hidden">
             <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-gradient-to-br from-premium-primary to-premium-primary2 text-[12px] font-extrabold text-white">
-              B
+              {nombreNegocio.charAt(0).toUpperCase()}
             </div>
-            <span className="text-[14px] font-semibold tracking-[-0.3px] text-premium-primary">BarberPole</span>
+            <span className="text-[14px] font-semibold tracking-[-0.3px] text-premium-primary">{nombreNegocio}</span>
           </div>
 
           <div>

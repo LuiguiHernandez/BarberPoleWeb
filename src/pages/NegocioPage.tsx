@@ -101,7 +101,7 @@ export function NegocioPage() {
         <label className="mb-1.5 block text-[13px] text-premium-muted">Enlace de reservas</label>
         <div className="flex items-center">
           <span className="whitespace-nowrap rounded-l-[10px] border border-premium-border bg-premium-bg px-3.5 py-2.5 text-[14px] text-premium-muted">
-            BarberPole/
+            GestorPro/
           </span>
           <Input
             className="rounded-l-none border-l-0"

@@ -51,7 +51,7 @@ export function LoginPage() {
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-[16px] bg-gradient-to-br from-premium-primary to-premium-primary2 mb-4">
             <Scissors className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-premium-text mb-2">BarberPole</h1>
+          <h1 className="text-2xl font-bold text-premium-text mb-2">GestorPro</h1>
           <p className="text-premium-muted">Inicia sesión en tu cuenta</p>
         </div>
 
@@ -124,7 +124,7 @@ export function LoginPage() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-xs text-premium-muted">
-            BarberPole - Sistema de gestión para barberías
+            GestorPro - Sistema de gestión para negocios
           </p>
         </div>
       </div>

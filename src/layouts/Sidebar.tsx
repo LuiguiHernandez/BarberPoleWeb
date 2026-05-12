@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { paths } from "../routes/paths";
 import { cn } from "../utils/cn";
 import { BarChart3, Bot, LayoutGrid, MessageSquare, Settings, Star } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const NAV_ITEMS: Array<{
   id: string;
@@ -18,6 +19,9 @@ const NAV_ITEMS: Array<{
 ];
 
 export function Sidebar() {
+  const { user } = useAuth();
+  const nombreNegocio = user?.negocio?.nombre || "GestorPro";
+
   return (
     <aside className="hidden min-[861px]:flex fixed left-0 top-0 z-[100] h-dvh w-[240px] flex-col border-r border-premium-border bg-premium-panel">
       {/* Brand */}
@@ -33,8 +37,8 @@ export function Sidebar() {
               <polygon points="6,11 12,14 12,15 6,13" fill="#dc2626"/>
             </svg>
           </div>
-          <div className="text-[18px] font-semibold tracking-[-0.2px] text-premium-text">
-            Barber<span className="text-premium-primary">Pole</span>
+          <div className="text-[18px] font-semibold tracking-[-0.2px] text-premium-text leading-tight">
+            <span className="text-premium-primary">{nombreNegocio}</span>
           </div>
         </div>
       </div>
@@ -75,8 +79,8 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="mt-auto border-t border-premium-border px-5 py-4">
-        <div className="text-[11px] text-premium-muted/70">Barbería</div>
-        <div className="mt-0.5 text-[13px] font-semibold text-premium-text">Optus Barber</div>
+        <div className="text-[11px] text-premium-muted/70">GestorPro</div>
+        <div className="mt-0.5 text-[13px] font-semibold text-premium-text">{nombreNegocio}</div>
       </div>
     </aside>
   );
