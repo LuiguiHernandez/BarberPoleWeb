@@ -38,6 +38,18 @@ export function CitasPage() {
   const [showModal, setShowModal] = useState(false);
   const [menuCitaId, setMenuCitaId] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuCitaId(null);
+      }
+    }
+    if (menuCitaId !== null) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuCitaId]);
   const [modalLoading, setModalLoading] = useState(false);
   const [form, setForm] = useState<NuevaCitaForm>({ fecha: toISODate(new Date()), hora: "09:00", barbero_id: "", servicio_id: "", cliente_telefono: "", cliente_nombre: "", notas: "" });
 
