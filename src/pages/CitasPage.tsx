@@ -71,11 +71,14 @@ export function CitasPage() {
     setCurrentDate(next);
   }
 
+  const FORM_INICIAL: NuevaCitaForm = { fecha: toISODate(new Date()), hora: "09:00", barbero_id: "", servicio_id: "", cliente_telefono: "", cliente_nombre: "", notas: "" };
+
   async function handleCrearCita() {
     setModalLoading(true);
     try {
       await citas.crear({ fecha_hora: `${form.fecha}T${form.hora}:00`, barbero_id: Number(form.barbero_id), servicio_id: Number(form.servicio_id), cliente_telefono: form.cliente_telefono, cliente_nombre: form.cliente_nombre || undefined, notas: form.notas || undefined });
       setShowModal(false);
+      setForm(FORM_INICIAL);
       await Promise.all([cargarCitas(), cargarStats()]);
     } catch (e: any) {
       setError(e.message);
@@ -159,7 +162,7 @@ export function CitasPage() {
       </Card>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setShowModal(false)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => { setShowModal(false); setForm(FORM_INICIAL); }}>
           <div className="w-full max-w-md rounded-[18px] bg-premium-panel border border-premium-border p-6 mx-4 shadow-card" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-[16px] font-semibold text-premium-text mb-5">Nueva cita</h3>
             <div className="flex flex-col gap-4">
@@ -201,7 +204,7 @@ export function CitasPage() {
               </div>
             </div>
             <div className="mt-6 flex gap-3 justify-end">
-              <Button variant="ghost" size="sm" onClick={() => setShowModal(false)}>Cancelar</Button>
+              <Button variant="ghost" size="sm" onClick={() => { setShowModal(false); setForm(FORM_INICIAL); }}>Cancelar</Button>
               <Button size="sm" onClick={handleCrearCita} disabled={modalLoading || !form.cliente_telefono || !form.barbero_id || !form.servicio_id}>
                 {modalLoading ? "Creando..." : "Crear cita"}
               </Button>
