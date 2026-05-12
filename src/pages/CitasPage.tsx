@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { barberos, citas, dashboard, servicios, formatPrecio, type Barbero, type Cita, type Servicio } from "../api/client";
 import { Card } from "../components/ui/Card";
 import { SegmentedTabs } from "../components/ui/SegmentedTabs";
@@ -36,6 +36,8 @@ export function CitasPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [menuCitaId, setMenuCitaId] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [form, setForm] = useState<NuevaCitaForm>({ fecha: toISODate(new Date()), hora: "09:00", barbero_id: "", servicio_id: "", cliente_telefono: "", cliente_nombre: "", notas: "" });
 
@@ -69,6 +71,16 @@ export function CitasPage() {
     else if (view === "semana") next.setDate(next.getDate() + delta * 7);
     else next.setMonth(next.getMonth() + delta);
     setCurrentDate(next);
+  }
+
+  async function cambiarEstado(citaId: number, estado: string) {
+    try {
+      await citas.actualizar(citaId, { estado } as any);
+      setMenuCitaId(null);
+      await Promise.all([cargarCitas(), cargarStats()]);
+    } catch (e: any) {
+      setError(e.message);
+    }
   }
 
   const FORM_INICIAL: NuevaCitaForm = { fecha: toISODate(new Date()), hora: "09:00", barbero_id: "", servicio_id: "", cliente_telefono: "", cliente_nombre: "", notas: "" };
@@ -152,6 +164,23 @@ export function CitasPage() {
                 </div>
                 <div className={cn("rounded-full px-2.5 py-1 text-[11px] font-semibold shrink-0", ESTADO_COLOR[cita.estado])}>{ESTADO_LABEL[cita.estado]}</div>
                 <div className="text-[13px] font-semibold text-premium-primary shrink-0">{formatPrecio(cita.precio)}</div>
+                <div className="relative shrink-0">
+                  <button
+                    onClick={() => setMenuCitaId(menuCitaId === cita.id ? null : cita.id)}
+                    className="flex h-7 w-7 items-center justify-center rounded-[8px] border border-premium-border bg-premium-bg hover:bg-[rgba(179,207,229,0.25)] text-premium-muted transition text-lg leading-none"
+                    aria-label="Acciones"
+                  >⋯</button>
+                  {menuCitaId === cita.id && (
+                    <div ref={menuRef} className="absolute right-0 top-8 z-50 w-44 rounded-[12px] border border-premium-border bg-premium-panel shadow-card overflow-hidden">
+                      {cita.estado !== "completada"  && <button onClick={() => cambiarEstado(cita.id, "completada")}  className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-green-600">✓ Completada</button>}
+                      {cita.estado !== "confirmada"  && <button onClick={() => cambiarEstado(cita.id, "confirmada")}  className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-premium-primary">● Confirmada</button>}
+                      {cita.estado !== "pendiente"   && <button onClick={() => cambiarEstado(cita.id, "pendiente")}   className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-yellow-600">○ Pendiente</button>}
+                      {cita.estado !== "no_asistio"  && <button onClick={() => cambiarEstado(cita.id, "no_asistio")}  className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-premium-muted">✗ No asistió</button>}
+                      <div className="border-t border-premium-border"/>
+                      {cita.estado !== "cancelada"   && <button onClick={() => cambiarEstado(cita.id, "cancelada")}   className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-red-500/10 text-red-500">Cancelar cita</button>}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             <div className="flex justify-end p-4 border-t border-premium-border">
