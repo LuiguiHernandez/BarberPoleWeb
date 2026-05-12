@@ -38,6 +38,7 @@ export function CitasPage() {
   const [showModal, setShowModal] = useState(false);
   const [menuCitaId, setMenuCitaId] = useState<number | null>(null);
   const [editCita, setEditCita] = useState<Cita | null>(null);
+  const [editForm, setEditForm] = useState<{ nombre: string; fecha: string; hora: string; barbero_id: string; servicio_id: string; notas: string }>({ nombre: "", fecha: "", hora: "", barbero_id: "", servicio_id: "", notas: "" });
   const [editLoading, setEditLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -91,19 +92,12 @@ export function CitasPage() {
     if (!editCita) return;
     setEditLoading(true);
     try {
-      const fecha = (document.getElementById("edit-fecha") as HTMLInputElement)?.value;
-      const hora  = (document.getElementById("edit-hora") as HTMLInputElement)?.value;
-      const barbero_id  = (document.getElementById("edit-barbero") as HTMLSelectElement)?.value;
-      const servicio_id = (document.getElementById("edit-servicio") as HTMLSelectElement)?.value;
-      const notas       = (document.getElementById("edit-notas") as HTMLInputElement)?.value;
-      const nombre      = (document.getElementById("edit-nombre") as HTMLInputElement)?.value;
-
       await citas.actualizar(editCita.id, {
-        fecha_hora:  `${fecha}T${hora}:00`,
-        barbero_id:  barbero_id  ? Number(barbero_id)  : undefined,
-        servicio_id: servicio_id ? Number(servicio_id) : undefined,
-        notas:       notas || undefined,
-        cliente_nombre: nombre || undefined,
+        fecha_hora:     `${editForm.fecha}T${editForm.hora}:00`,
+        barbero_id:     editForm.barbero_id  ? Number(editForm.barbero_id)  : undefined,
+        servicio_id:    editForm.servicio_id ? Number(editForm.servicio_id) : undefined,
+        notas:          editForm.notas || undefined,
+        cliente_nombre: editForm.nombre || undefined,
       } as any);
       setEditCita(null);
       await Promise.all([cargarCitas(), cargarStats()]);
@@ -213,7 +207,18 @@ export function CitasPage() {
                   >⋯</button>
                   {menuCitaId === cita.id && (
                     <div ref={menuRef} className="absolute right-0 top-8 z-50 w-44 rounded-[12px] border border-premium-border bg-premium-panel shadow-card overflow-hidden">
-                      <button onClick={() => { setEditCita(cita); setMenuCitaId(null); }} className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-premium-text font-medium">✏️ Editar cita</button>
+                      <button onClick={() => { 
+        setEditCita(cita); 
+        setEditForm({
+          nombre:      cita.cliente?.nombre || "",
+          fecha:       cita.fecha_hora.split("T")[0],
+          hora:        cita.fecha_hora.split("T")[1]?.slice(0,5) || "09:00",
+          barbero_id:  cita.barbero?.id?.toString() || "",
+          servicio_id: cita.servicio?.id?.toString() || "",
+          notas:       cita.notas || "",
+        });
+        setMenuCitaId(null); 
+      }} className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-premium-text font-medium">✏️ Editar cita</button>
                       <div className="border-t border-premium-border"/>
                       {cita.estado !== "completada"  && <button onClick={() => cambiarEstado(cita.id, "completada")}  className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-green-600">✓ Completada</button>}
                       {cita.estado !== "confirmada"  && <button onClick={() => cambiarEstado(cita.id, "confirmada")}  className="w-full px-4 py-2.5 text-left text-[13px] hover:bg-[rgba(179,207,229,0.15)] text-premium-primary">● Confirmada</button>}
@@ -285,7 +290,6 @@ export function CitasPage() {
         </div>
       )}
 
-      {/* ── MODAL EDITAR CITA ── */}
       {editCita && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setEditCita(null)}>
           <div className="w-full max-w-md rounded-[18px] bg-premium-panel border border-premium-border p-6 mx-4 shadow-card" onClick={(e) => e.stopPropagation()}>
@@ -293,35 +297,35 @@ export function CitasPage() {
             <div className="flex flex-col gap-4">
               <div>
                 <label className="mb-1.5 block text-[12px] text-premium-muted">Nombre del cliente</label>
-                <Input id="edit-nombre" defaultValue={editCita.cliente?.nombre || ""} placeholder="Nombre completo" />
+                <Input value={editForm.nombre} onChange={(e) => setEditForm(f => ({ ...f, nombre: e.target.value }))} placeholder="Nombre completo" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="mb-1.5 block text-[12px] text-premium-muted">Fecha</label>
-                  <Input id="edit-fecha" type="date" defaultValue={editCita.fecha_hora.split("T")[0]} />
+                  <Input type="date" value={editForm.fecha} onChange={(e) => setEditForm(f => ({ ...f, fecha: e.target.value }))} />
                 </div>
                 <div>
                   <label className="mb-1.5 block text-[12px] text-premium-muted">Hora</label>
-                  <Input id="edit-hora" type="time" defaultValue={editCita.fecha_hora.split("T")[1]?.slice(0,5) || "09:00"} />
+                  <Input type="time" value={editForm.hora} onChange={(e) => setEditForm(f => ({ ...f, hora: e.target.value }))} />
                 </div>
               </div>
               <div>
                 <label className="mb-1.5 block text-[12px] text-premium-muted">Profesional</label>
-                <Select id="edit-barbero" defaultValue={editCita.barbero?.id?.toString() || ""}>
+                <Select value={editForm.barbero_id} onChange={(e) => setEditForm(f => ({ ...f, barbero_id: e.target.value }))}>
                   <option value="">Sin asignar</option>
                   {listaBarberos.map((b) => <option key={b.id} value={b.id}>{b.nombre}</option>)}
                 </Select>
               </div>
               <div>
                 <label className="mb-1.5 block text-[12px] text-premium-muted">Servicio</label>
-                <Select id="edit-servicio" defaultValue={editCita.servicio?.id?.toString() || ""}>
+                <Select value={editForm.servicio_id} onChange={(e) => setEditForm(f => ({ ...f, servicio_id: e.target.value }))}>
                   <option value="">Sin servicio</option>
                   {listaServicios.map((s) => <option key={s.id} value={s.id}>{s.nombre} — {formatPrecio(s.precio)}</option>)}
                 </Select>
               </div>
               <div>
                 <label className="mb-1.5 block text-[12px] text-premium-muted">Notas</label>
-                <Input id="edit-notas" defaultValue={editCita.notas || ""} placeholder="Instrucciones especiales..." />
+                <Input value={editForm.notas} onChange={(e) => setEditForm(f => ({ ...f, notas: e.target.value }))} placeholder="Instrucciones especiales..." />
               </div>
             </div>
             <div className="flex justify-end gap-2 mt-6">
